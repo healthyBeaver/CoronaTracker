@@ -1,0 +1,342 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
+/**
+ * This class is mainly for utilizing the data of countries stored in the
+ * database and send the info requested by the program to the main
+ * 
+ * @author user Hyukjoon HJ Yang
+ *
+ */
+public class CountryData {
+
+	URL dataURL;
+	URLConnection connectURL;
+	BufferedReader br;
+
+	int infected;
+	int tested;
+	int recovered;
+	int deceased;
+	String country;
+	String moreData;
+	String historyData;
+	String sourceURL;
+	String updateTime;
+
+	BigDecimal totalInfected;
+	BigDecimal totalInfectedCountry;
+//	BigDecimal totalPopulation;
+	BigDecimal totalDeceased;
+	BigDecimal totalDeceasedCountry;
+
+	/**
+	 * Constructor that initilaizes the connection with the online source data
+	 */
+	public CountryData() {
+		System.out.println("Connecting to Online Data");
+		try {
+			dataURL = new URL(
+					"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
+			connectURL = dataURL.openConnection();
+			br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
+			System.out.println("Online Data Connected");
+		} catch (MalformedURLException e) {
+			System.out.println("Online Data Not Connected");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Online Data Not Connected");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Loads the data from the online source and apply the updates of the data in
+	 * the database
+	 * 
+	 * @param connection is the SQLConnection object
+	 */
+	public void loadFile(SQLConnection connection) {
+		String line = null;
+		boolean start = false;
+		String[] splitLine = null;
+		System.out.println("Updating Database");
+		try {
+
+			// Read each line in the data from the online source
+			while ((line = br.readLine()) != null) {
+				line = line.trim();
+
+				// Start getting info about a country from the online source
+				if (line.charAt(0) == '{') {
+					start = true;
+					continue;
+				}
+
+				// Insert/Update new info about a country
+				if (line.charAt(0) == '}') {
+					start = false;
+					// Insert the data into the database
+					if (infected != -1) {
+						connection.loadData(country, infected, recovered, deceased, tested, updateTime, moreData,
+								historyData, sourceURL);
+					}
+					country = updateTime = moreData = historyData = sourceURL = null;
+					infected = recovered = deceased = tested = -1;
+					continue;
+				}
+
+				// Disregard unimportant lines from the online source
+				if (start == false) {
+					continue;
+				}
+
+				// Retrieve info about a country from the online source
+				if (start) {
+					splitLine = line.split("\":");
+
+					// Remove comma at the end of the line if exists
+					if (splitLine[1].charAt(splitLine[1].length() - 1) == ',') {
+						splitLine[1] = splitLine[1].substring(0, splitLine[1].length() - 1);
+					}
+
+					// Remove double quotes
+					splitLine[0] = splitLine[0].replaceAll("\"", "");
+					splitLine[1] = splitLine[1].replaceAll("\"", "");
+
+					splitLine[0] = splitLine[0].toLowerCase();
+
+					// Remove white spaces at the beginning and at the end
+					splitLine[0] = splitLine[0].trim();
+					splitLine[1] = splitLine[1].trim();
+					if (splitLine[0].compareTo("infected") == 0) {
+						try {
+							infected = Integer.parseInt(splitLine[1]);
+						} catch (NumberFormatException e) {
+							infected = -1;
+						}
+					} else if (splitLine[0].compareTo("tested") == 0) {
+						try {
+							tested = Integer.parseInt(splitLine[1]);
+						} catch (NumberFormatException e) {
+							tested = -1;
+						}
+					} else if (splitLine[0].compareTo("recovered") == 0) {
+						try {
+							recovered = Integer.parseInt(splitLine[1]);
+						} catch (NumberFormatException e) {
+							recovered = -1;
+						}
+					} else if (splitLine[0].compareTo("deceased") == 0) {
+						try {
+							deceased = Integer.parseInt(splitLine[1]);
+						} catch (NumberFormatException e) {
+							deceased = -1;
+						}
+					} else if (splitLine[0].compareTo("country") == 0) {
+						country = splitLine[1].toUpperCase();
+					} else if (splitLine[0].compareTo("moredata") == 0) {
+						moreData = splitLine[1];
+					} else if (splitLine[0].compareTo("historydata") == 0) {
+						historyData = splitLine[1];
+					} else if (splitLine[0].compareTo("sourceurl") == 0) {
+						sourceURL = splitLine[1];
+					} else if (splitLine[0].compareTo("lastupdatedapify") == 0) {
+						updateTime = splitLine[1];
+					}
+				}
+			}
+
+			// Calculates the sum of the infected and the deceased
+			BigDecimal[] resultInfected = connection.sumInfected();
+			BigDecimal[] resultDeceased = connection.sumDeceased();
+			if (resultInfected == null | resultDeceased == null) {
+				System.out.println("Database Not Updated");
+				return;
+			}
+			totalInfected = resultInfected[0];
+			totalInfectedCountry = resultInfected[1];
+			totalDeceased = resultDeceased[0];
+			totalDeceasedCountry = resultDeceased[1];
+			System.out.println("Database Updated");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Database Not Updated");
+		}
+	}
+
+	/**
+	 * Is called on the main page of the app program to display the statistic of the
+	 * infected and the deceased
+	 */
+	public void worldData() {
+		System.out.print("Total number of the Infected:\t" + totalInfected);
+		System.out.println(" in " + totalInfectedCountry + " countries");
+		System.out.print("Total number of the Deceased:\t" + totalDeceased);
+		System.out.println(" in " + totalDeceasedCountry + " countries");
+	}
+
+	/**
+	 * Prints the number of the infected and the deceased respectively of all
+	 * countries stored in the database
+	 * 
+	 * @param connection is SQLConnection object
+	 */
+	public void briefInfoCountries(SQLConnection connection) {
+		ArrayList<String[]> result = connection.retrieveBriefData();
+		for (int i = 0; i < result.size(); i++) {
+			System.out.println(result.get(i)[0]);
+			System.out.println("\tInfected: \t" + result.get(i)[1]);
+			System.out.println("\tDeceased: \t" + result.get(i)[2]);
+		}
+	}
+
+	/**
+	 * Returns the statistics of the COVID status of a country
+	 * 
+	 * @param connection is SQLConnection object
+	 * @param country    is the name of a country to be searched for COVID info
+	 * @return Array of String storing the requested info
+	 */
+	public String[] infoCountries(SQLConnection connection, String country) {
+		String[] result = connection.retrieveDetailData(country);
+		if (result == null) {
+			System.out.println("Data of " + country + " does not exist");
+			return null;
+		}
+		// Get the data of the latest update before current data of the country
+		ArrayList<String[]> updates = connection.retrieveUpdate(country);
+
+		// Variables to store the difference between the current data and the latest
+		// update before the current
+		int diffInfected = Integer.MIN_VALUE;
+		int diffRecovered = Integer.MIN_VALUE;
+		int diffDeceased = Integer.MIN_VALUE;
+		int diffTested = Integer.MIN_VALUE;
+
+		// Calculate the differences
+		if (updates != null) {
+			if (result[1].compareTo("N/A") != 0) {
+				try {
+					diffInfected = Integer.parseInt(result[1]) - Integer.parseInt(updates.get(0)[2]);
+				} catch (NumberFormatException e) {
+				}
+			}
+			if (result[2].compareTo("N/A") != 0) {
+				try {
+					diffRecovered = Integer.parseInt(result[2]) - Integer.parseInt(updates.get(0)[3]);
+				} catch (NumberFormatException e) {
+				}
+			}
+			if (result[3].compareTo("N/A") != 0) {
+				try {
+					diffDeceased = Integer.parseInt(result[3]) - Integer.parseInt(updates.get(0)[4]);
+				} catch (NumberFormatException e) {
+				}
+			}
+			if (result[4].compareTo("N/A") != 0) {
+				try {
+					diffTested = Integer.parseInt(result[4]) - Integer.parseInt(updates.get(0)[5]);
+				} catch (NumberFormatException e) {
+				}
+			}
+		}
+
+		System.out.println(result[0] + " Statistics");
+
+		// Prints the data of the country
+		if (diffInfected == Integer.MIN_VALUE) {
+			System.out.println("\tInifected: \t" + result[1] + "\t N/A");
+		} else if (diffInfected > 0) {
+			System.out.println("\tInifected: \t" + result[1] + "\t +" + diffInfected);
+		} else {
+			System.out.println("\tInifected: \t" + result[1] + "\t" + diffInfected);
+		}
+
+		if (diffRecovered == Integer.MIN_VALUE) {
+			System.out.println("\tRecovered: \t" + result[2] + "\t N/A");
+		} else if (diffRecovered > 0) {
+			System.out.println("\tRecovered: \t" + result[2] + "\t +" + diffRecovered);
+		} else {
+			System.out.println("\tRecovered: \t" + result[2] + "\t" + diffRecovered);
+		}
+
+		if (diffDeceased == Integer.MIN_VALUE) {
+			System.out.println("\tDeceased: \t" + result[3] + "\t N/A");
+		} else if (diffRecovered > 0) {
+			System.out.println("\tDeceased: \t" + result[3] + "\t +" + diffDeceased);
+		} else {
+			System.out.println("\tDeceased: \t" + result[3] + "\t" + diffDeceased);
+		}
+
+		if (diffTested == Integer.MIN_VALUE) {
+			System.out.println("\tTested: \t" + result[4] + "\t N/A");
+		} else if (diffTested > 0) {
+			System.out.println("\tTested: \t" + result[4] + "\t +" + diffTested);
+		} else {
+			System.out.println("\tTested: \t" + result[4] + "\t" + diffTested);
+		}
+
+		if (result[5] == null | result[5].compareTo("null") == 0) {
+			result[5] = "DNE";
+		}
+		if (result[6] == null | result[6].compareTo("null") == 0) {
+			result[6] = "DNE";
+		}
+		if (result[7] == null | result[7].compareTo("null") == 0) {
+			result[7] = "DNE";
+		}
+		if (result[8] == null | result[8].compareTo("null") == 0) {
+			result[8] = "DNE";
+		}
+		System.out.println("\tUpdate: \t" + result[5]);
+		System.out.println("\tMore Data: \t" + result[6]);
+		System.out.println("\tHistory: \t" + result[7]);
+		System.out.println("\tSource: \t" + result[8]);
+
+		return result;
+	}
+
+	/**
+	 * Prints the log of the updates done for the country
+	 * 
+	 * @param connection is SQLConnection object
+	 * @param country    is the country which updates have been made for
+	 */
+	public void updateLogCountry(SQLConnection connection, String country) {
+		ArrayList<String[]> result = connection.retrieveUpdate(country);
+		if (result == null) {
+			System.out.println("Such country updates does not exist");
+			return;
+		}
+		System.out.println(result.get(0)[0] + " Update History");
+		for (int i = 0; i < result.size(); i++) {
+			System.out.println("\"Update \t" + result.get(i)[1]);
+			System.out.println("\tInifected: \t" + result.get(i)[2]);
+			System.out.println("\tRecovered: \t" + result.get(i)[3]);
+			System.out.println("\tDeceased: \t" + result.get(i)[4]);
+			System.out.println("\tTested: \t" + result.get(i)[5]);
+		}
+	}
+
+	/**
+	 * This method is called at the end of the app program to terminate all
+	 * connections
+	 */
+	public void endConnection() {
+		try {
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
