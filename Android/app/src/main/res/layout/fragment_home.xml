@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+    <RelativeLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white"
+        tools:context=".MainActivity">
+
+        <!-- Card view for displaying the -->
+        <!-- Pie chart and details of pie chart -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewGraph"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="10dp">
+
+
+            <!--Linear layout to display pie chart -->
+            <!-- and details of pie chart-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Pie chart to display the data-->
+
+                <org.eazegraph.lib.charts.PieChart
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/piechart"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="6dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="15dp"
+
+                    />
+
+                <!--Creating another linear layout -->
+                <!-- to display pie chart details -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical">
+
+                        <!--View to display the yellow color icon-->
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/R"/>
+
+                        <!--Text view to display "Infected" -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Infected"
+                            android:paddingLeft="10dp"/>
+
+                    </LinearLayout>
+
+                    <!--Linear layout to display "Deceased" -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp">
+
+                        <!--View to display the green color icon-->
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/Python"/>
+
+                        <!--Text view to display "Deceased" text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Deceased"
+                            android:paddingLeft="10dp"/>
+
+                    </LinearLayout>
+
+                    <!--Linear layout to display "Tested" -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp">
+
+                        <!--View to display the red color icon-->
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/CPP"/>
+
+                        <!--Text view to display "Tested" text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tested"
+                            android:paddingLeft="10dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Another Card view for displaying -->
+        <!-- Use of programming languages -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_below="@+id/cardViewGraph"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="10dp"
+            android:id="@+id/details">
+
+            <!--Relative layout to display -->
+            <!-- use of programming languages -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--Text view to use of -->
+                <!-- programming languages text-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Global Data \n(Number of each part):"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"/>
+
+                <!--View to display the line-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <!--Text view to display "Infected" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Infected"
+                        android:textSize="18sp"/>
+
+                    <!--Text view to display the -->
+                    <!-- number of infected people. -->
+                    <!-- For now default set to 0-->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvR"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <!--View to display the line-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Deceased"
+                        android:textSize="18sp"/>
+
+                    <!--Text view to display the number of deceased people.-->
+                    <!-- For now default set to 0-->
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvPython"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Tested"
+                        android:textSize="18sp"/>
+
+                    <!--Text view to display the number of tested people. -->
+                    <!-- For now default set to 0-->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvCPP"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+<!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:layout_height="fill_parent"-->
+<!--        android:orientation="vertical" >-->
+
+<!--        &lt;!&ndash; First box, boxbg.xml &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_margin="20dp"-->
+<!--            android:background="@drawable/rectangle"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="5dp" >-->
+
+<!--            <TextView-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/infected_data"-->
+<!--                android:textColor="#000"-->
+<!--                android:textSize="20dp" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_margin="20dp"-->
+<!--            android:background="@drawable/rectangle"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="7dp" >-->
+
+<!--            <TextView-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/deceased_data"-->
+<!--                android:textColor="#FFF"-->
+<!--                android:textSize="20dp" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

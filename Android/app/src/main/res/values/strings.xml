@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_home">Global Data</string>
+    <string name="title_dashboard">Country List</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="infected_data">Infected</string>
+    <string name="deceased_data">Deceased</string>
+    <string-array name="array_technology">
+        <item>Android</item>
+        <item>Java</item>
+        <item>Php</item>
+        <item>Hadoop</item>
+        <item>Sap</item>
+        <item>Python</item>
+        <item>Ajax</item>
+        <item>C++</item>
+        <item>Ruby</item>
+        <item>Rails</item>
+        <item>.Net</item>
+        <item>Perl</item>
+    </string-array>
+</resources>
