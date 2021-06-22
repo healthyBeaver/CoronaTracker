@@ -218,7 +218,7 @@ public class SQLConnection {
 	 * @param time is String representing the time
 	 * @return String for the time in correct format
 	 */
-	public String convertDate(String time) {
+	private String convertDate(String time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
@@ -437,7 +437,7 @@ public class SQLConnection {
 			query = "SELECT SUM(deceased) as deceased, COUNT(deceased) as countries FROM countryData WHERE deceased != -1;";
 			rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				result[0] = rs.getBigDecimal(1); // Total Infected
+				result[0] = rs.getBigDecimal(1); // Total Deceased
 				result[1] = rs.getBigDecimal(2); // Total Countries
 			}
 			return result;
