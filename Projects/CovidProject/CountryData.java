@@ -178,11 +178,13 @@ public class CountryData {
 	 * Is called on the main page of the app program to display the statistic of the
 	 * infected and the deceased
 	 */
-	public void worldData() {
-		System.out.print("Total number of the Infected:\t" + totalInfected);
-		System.out.println(" in " + totalInfectedCountry + " countries");
-		System.out.print("Total number of the Deceased:\t" + totalDeceased);
-		System.out.println(" in " + totalDeceasedCountry + " countries");
+	public String[] worldData() {
+		String[] result = new String[4];
+		result[0] = totalInfected + "";
+		result[1] = totalInfectedCountry + "";
+		result[2] = totalDeceased + "";
+		result[3] = totalDeceasedCountry + "";
+		return result;
 	}
 
 	/**
@@ -191,13 +193,14 @@ public class CountryData {
 	 * 
 	 * @param connection is SQLConnection object
 	 */
-	public void briefInfoCountries(SQLConnection connection) {
-		ArrayList<String[]> result = connection.retrieveBriefData();
-		for (int i = 0; i < result.size(); i++) {
-			System.out.println(result.get(i)[0]);
-			System.out.println("\tInfected: \t" + result.get(i)[1]);
-			System.out.println("\tDeceased: \t" + result.get(i)[2]);
-		}
+	public ArrayList<String[]> briefInfoCountries(SQLConnection connection) {
+		return connection.retrieveBriefData();
+//		ArrayList<String[]> result = connection.retrieveBriefData();
+//		for (int i = 0; i < result.size(); i++) {
+//			System.out.println(result.get(i)[0]);
+//			System.out.println("\tInfected: \t" + result.get(i)[1]);
+//			System.out.println("\tDeceased: \t" + result.get(i)[2]);
+//		}
 	}
 
 	/**
@@ -207,12 +210,18 @@ public class CountryData {
 	 * @param country    is the name of a country to be searched for COVID info
 	 * @return Array of String storing the requested info
 	 */
-	public String[] infoCountries(SQLConnection connection, String country) {
-		String[] result = connection.retrieveDetailData(country);
-		if (result == null) {
+	public ArrayList<String[]> infoCountries(SQLConnection connection, String country) {
+		ArrayList<String[]> result = new ArrayList<>();
+
+		// Data of a country
+		String[] data = connection.retrieveDetailData(country);
+		if (data == null) {
 			System.out.println("Data of " + country + " does not exist");
 			return null;
 		}
+
+		result.add(data);
+
 		// Get the data of the latest update before current data of the country
 		ArrayList<String[]> updates = connection.retrieveUpdate(country);
 
@@ -225,83 +234,92 @@ public class CountryData {
 
 		// Calculate the differences
 		if (updates != null) {
-			if (result[1].compareTo("N/A") != 0) {
+			if (data[1].compareTo("N/A") != 0) {
 				try {
-					diffInfected = Integer.parseInt(result[1]) - Integer.parseInt(updates.get(0)[2]);
+					diffInfected = Integer.parseInt(data[1]) - Integer.parseInt(updates.get(0)[2]);
 				} catch (NumberFormatException e) {
 				}
 			}
-			if (result[2].compareTo("N/A") != 0) {
+			if (data[2].compareTo("N/A") != 0) {
 				try {
-					diffRecovered = Integer.parseInt(result[2]) - Integer.parseInt(updates.get(0)[3]);
+					diffRecovered = Integer.parseInt(data[2]) - Integer.parseInt(updates.get(0)[3]);
 				} catch (NumberFormatException e) {
 				}
 			}
-			if (result[3].compareTo("N/A") != 0) {
+			if (data[3].compareTo("N/A") != 0) {
 				try {
-					diffDeceased = Integer.parseInt(result[3]) - Integer.parseInt(updates.get(0)[4]);
+					diffDeceased = Integer.parseInt(data[3]) - Integer.parseInt(updates.get(0)[4]);
 				} catch (NumberFormatException e) {
 				}
 			}
-			if (result[4].compareTo("N/A") != 0) {
+			if (data[4].compareTo("N/A") != 0) {
 				try {
-					diffTested = Integer.parseInt(result[4]) - Integer.parseInt(updates.get(0)[5]);
+					diffTested = Integer.parseInt(data[4]) - Integer.parseInt(updates.get(0)[5]);
 				} catch (NumberFormatException e) {
 				}
 			}
 		}
 
-		System.out.println(result[0] + " Statistics");
+		System.out.println(data[0] + " Statistics");
+		String[] changes = new String[9];
 
 		// Prints the data of the country
 		if (diffInfected == Integer.MIN_VALUE) {
-			System.out.println("\tInifected: \t" + result[1] + "\t N/A");
-		} else if (diffInfected > 0) {
-			System.out.println("\tInifected: \t" + result[1] + "\t +" + diffInfected);
+			changes[1] = "N/A";
+//			System.out.println("\tInifected: \t" + data[1] + "\t N/A");
+//		} else if (diffInfected > 0) {
+//			System.out.println("\tInifected: \t" + data[1] + "\t +" + diffInfected);
 		} else {
-			System.out.println("\tInifected: \t" + result[1] + "\t" + diffInfected);
+			changes[1] = diffInfected + "";
+//			System.out.println("\tInifected: \t" + data[1] + "\t" + diffInfected);
 		}
 
 		if (diffRecovered == Integer.MIN_VALUE) {
-			System.out.println("\tRecovered: \t" + result[2] + "\t N/A");
-		} else if (diffRecovered > 0) {
-			System.out.println("\tRecovered: \t" + result[2] + "\t +" + diffRecovered);
+			changes[2] = "N/A";
+//			System.out.println("\tRecovered: \t" + data[2] + "\t N/A");
+//		} else if (diffRecovered > 0) {
+//			System.out.println("\tRecovered: \t" + data[2] + "\t +" + diffRecovered);
 		} else {
-			System.out.println("\tRecovered: \t" + result[2] + "\t" + diffRecovered);
+			changes[2] = diffRecovered + "";
+//			System.out.println("\tRecovered: \t" + data[2] + "\t" + diffRecovered);
 		}
 
 		if (diffDeceased == Integer.MIN_VALUE) {
-			System.out.println("\tDeceased: \t" + result[3] + "\t N/A");
-		} else if (diffRecovered > 0) {
-			System.out.println("\tDeceased: \t" + result[3] + "\t +" + diffDeceased);
+			changes[3] = "N.A";
+//			System.out.println("\tDeceased: \t" + data[3] + "\t N/A");
+//		} else if (diffRecovered > 0) {
+//			System.out.println("\tDeceased: \t" + data[3] + "\t +" + diffDeceased);
 		} else {
-			System.out.println("\tDeceased: \t" + result[3] + "\t" + diffDeceased);
+			changes[3] = diffDeceased + "";
+//			System.out.println("\tDeceased: \t" + data[3] + "\t" + diffDeceased);
 		}
 
 		if (diffTested == Integer.MIN_VALUE) {
-			System.out.println("\tTested: \t" + result[4] + "\t N/A");
-		} else if (diffTested > 0) {
-			System.out.println("\tTested: \t" + result[4] + "\t +" + diffTested);
+			changes[4] = "N/A";
+//			System.out.println("\tTested: \t" + data[4] + "\t N/A");
+//		} else if (diffTested > 0) {
+//			System.out.println("\tTested: \t" + data[4] + "\t +" + diffTested);
 		} else {
-			System.out.println("\tTested: \t" + result[4] + "\t" + diffTested);
+			changes[4] = diffTested + "";
+//			System.out.println("\tTested: \t" + data[4] + "\t" + diffTested);
 		}
 
-		if (result[5] == null | result[5].compareTo("null") == 0) {
-			result[5] = "DNE";
+		if (data[5] == null | data[5].compareTo("null") == 0) {
+			data[5] = "DNE";
 		}
-		if (result[6] == null | result[6].compareTo("null") == 0) {
-			result[6] = "DNE";
+		if (data[6] == null | data[6].compareTo("null") == 0) {
+			data[6] = "DNE";
 		}
-		if (result[7] == null | result[7].compareTo("null") == 0) {
-			result[7] = "DNE";
+		if (data[7] == null | data[7].compareTo("null") == 0) {
+			data[7] = "DNE";
 		}
-		if (result[8] == null | result[8].compareTo("null") == 0) {
-			result[8] = "DNE";
+		if (data[8] == null | data[8].compareTo("null") == 0) {
+			data[8] = "DNE";
 		}
-		System.out.println("\tUpdate: \t" + result[5]);
-		System.out.println("\tMore Data: \t" + result[6]);
-		System.out.println("\tHistory: \t" + result[7]);
-		System.out.println("\tSource: \t" + result[8]);
+		System.out.println("\tUpdate: \t" + data[5]);
+		System.out.println("\tMore Data: \t" + data[6]);
+		System.out.println("\tHistory: \t" + data[7]);
+		System.out.println("\tSource: \t" + data[8]);
 
 		return result;
 	}
@@ -312,20 +330,21 @@ public class CountryData {
 	 * @param connection is SQLConnection object
 	 * @param country    is the country which updates have been made for
 	 */
-	public void updateLogCountry(SQLConnection connection, String country) {
+	public ArrayList<String[]> updateLogCountry(SQLConnection connection, String country) {
 		ArrayList<String[]> result = connection.retrieveUpdate(country);
 		if (result == null) {
 			System.out.println("Such country updates does not exist");
-			return;
+			return null;
 		}
-		System.out.println(result.get(0)[0] + " Update History");
-		for (int i = 0; i < result.size(); i++) {
-			System.out.println("\"Update \t" + result.get(i)[1]);
-			System.out.println("\tInifected: \t" + result.get(i)[2]);
-			System.out.println("\tRecovered: \t" + result.get(i)[3]);
-			System.out.println("\tDeceased: \t" + result.get(i)[4]);
-			System.out.println("\tTested: \t" + result.get(i)[5]);
-		}
+		return result;
+//		System.out.println(result.get(0)[0] + " Update History");
+//		for (int i = 0; i < result.size(); i++) {
+//			System.out.println("\"Update \t" + result.get(i)[1]);
+//			System.out.println("\tInifected: \t" + result.get(i)[2]);
+//			System.out.println("\tRecovered: \t" + result.get(i)[3]);
+//			System.out.println("\tDeceased: \t" + result.get(i)[4]);
+//			System.out.println("\tTested: \t" + result.get(i)[5]);
+//		}
 	}
 
 	/**
