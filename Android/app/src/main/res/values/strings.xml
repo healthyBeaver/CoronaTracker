@@ -6,6 +6,10 @@
     <string name="title_notifications">Notifications</string>
     <string name="infected_data">Infected</string>
     <string name="deceased_data">Deceased</string>
+    <string name="version">3.0</string>
+    <string name="changelogTitle">Covid-19 Status v3.0</string>
+    <string name="changelog">\u2022 Fixed app crash on World Data screen.\n\u2022 Updated the dependencies to latest.\n\u2022 Use the new and updated API\n\u2022 Other minor fixes and code clean-up.</string>
+    <string name="owner_text">Made with ❤ in India\n\nBy Vipul Jha</string>
     <string-array name="Planets">
         <item>Sun</item>
         <item>Mercury</item>

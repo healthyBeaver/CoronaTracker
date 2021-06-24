@@ -53,4 +53,5 @@ public class DashboardFragment extends Fragment implements OnItemClickListener {
         super.onDestroyView();
         binding = null;
     }
+
 }
