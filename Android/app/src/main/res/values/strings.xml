@@ -1,11 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="title_home">Global Data</string>
-    <string name="title_dashboard">Country List</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="infected_data">Infected</string>
-    <string name="deceased_data">Deceased</string>
+    <string name="app_name">testAoo</string>
     <string name="version">3.0</string>
     <string name="changelogTitle">Covid-19 Status v3.0</string>
     <string name="changelog">\u2022 Fixed app crash on World Data screen.\n\u2022 Updated the dependencies to latest.\n\u2022 Use the new and updated API\n\u2022 Other minor fixes and code clean-up.</string>

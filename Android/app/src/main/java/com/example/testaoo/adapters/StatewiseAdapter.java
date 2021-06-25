@@ -1,4 +1,4 @@
-package com.example.myapplication.adapters;
+package com.example.testaoo.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.R;
-import com.example.myapplication.data.PerStateData;
-import com.example.myapplication.ui.dashboard.StatewiseModel;
+import com.example.testaoo.R;
+import com.example.testaoo.data.PerStateData;
+import com.example.testaoo.models.StatewiseModel;
 
 import java.util.ArrayList;
 
@@ -22,12 +22,9 @@ public class StatewiseAdapter extends RecyclerView.Adapter<StatewiseAdapter.View
     private ArrayList<StatewiseModel> arrayList;
     private OnItemClickListner mListner;
     private static final String STATE_NAME = "stateName";
-    private static final String STATE_CONFIRMED = "stateConfirmed";
+    private static final String STATE_INFECTED = "stateInfected";
     private static final String STATE_ACTIVE = "stateActive";
     private static final String STATE_DECEASED = "stateDeaceased";
-    private static final String STATE_NEW_CONFIRMED = "stateNewConfirmed";
-    private static final String STATE_NEW_RECOVERED = "stateNewRecovered";
-    private static final String STATE_NEW_DECEASED = "stateNewDeceased";
     private static final String STATE_LAST_UPDATE = "stateLastUpdate";
     private static final String STATE_RECOVERED = "stateRecovered";
 
@@ -60,12 +57,9 @@ public class StatewiseAdapter extends RecyclerView.Adapter<StatewiseAdapter.View
                 Intent perStateIntent = new Intent(mContext, PerStateData.class);
 
                 perStateIntent.putExtra(STATE_NAME, clickedItem.getState());
-                perStateIntent.putExtra(STATE_CONFIRMED, clickedItem.getConfirmed());
+                perStateIntent.putExtra(STATE_INFECTED, clickedItem.getConfirmed());
                 perStateIntent.putExtra(STATE_ACTIVE, clickedItem.getActive());
                 perStateIntent.putExtra(STATE_DECEASED, clickedItem.getDeceased());
-                perStateIntent.putExtra(STATE_NEW_CONFIRMED, clickedItem.getNewConfirmed());
-                perStateIntent.putExtra(STATE_NEW_RECOVERED, clickedItem.getNewRecovered());
-                perStateIntent.putExtra(STATE_NEW_DECEASED, clickedItem.getNewDeceased());
                 perStateIntent.putExtra(STATE_LAST_UPDATE, clickedItem.getLastupdate());
                 perStateIntent.putExtra(STATE_RECOVERED, clickedItem.getRecovered());
 

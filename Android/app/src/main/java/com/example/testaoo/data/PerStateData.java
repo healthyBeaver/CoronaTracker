@@ -1,34 +1,36 @@
-package com.example.myapplication.data;
+package com.example.testaoo.data;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.myapplication.MainActivity;
-import com.example.myapplication.R;
+import com.example.testaoo.MainActivity;
+import com.example.testaoo.R;
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
 
 import java.text.NumberFormat;
 import java.util.Objects;
 
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_ACTIVE;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_CONFIRMED;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_DECEASED;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_LAST_UPDATE;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_NAME;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_NEW_CONFIRMED;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_NEW_DECEASED;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_NEW_RECOVERED;
-import static com.example.myapplication.activities.StatewiseDataActivity.STATE_RECOVERED;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_ACTIVE;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_INFECTED;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_DECEASED;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_LAST_UPDATE;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_NAME;
+import static com.example.testaoo.activities.StatewiseDataActivity.STATE_RECOVERED;
 
 public class PerStateData extends AppCompatActivity {
 
     TextView perStateConfirmed, perStateActive, perStateDeceased, perStateNewConfirmed, perStateNewRecovered, perStateNewDeceased, perStateUpdate, perStateRecovered, perstateName;
+    PieChart mPieChart;
     String stateName;
 
     @Override
@@ -38,12 +40,9 @@ public class PerStateData extends AppCompatActivity {
 
         Intent intent = getIntent();
         stateName = intent.getStringExtra(STATE_NAME);
-        String stateConfirmed = intent.getStringExtra(STATE_CONFIRMED);
+        String stateConfirmed = intent.getStringExtra(STATE_INFECTED);
         String stateActive = intent.getStringExtra(STATE_ACTIVE);
         String stateDeceased = intent.getStringExtra(STATE_DECEASED);
-        String stateNewConfirmed = intent.getStringExtra(STATE_NEW_CONFIRMED);
-        String stateNewRecovered = intent.getStringExtra(STATE_NEW_RECOVERED);
-        String stateNewDeceased = intent.getStringExtra(STATE_NEW_DECEASED);
         String stateLastUpdate = intent.getStringExtra(STATE_LAST_UPDATE);
         String stateRecovery = intent.getStringExtra(STATE_RECOVERED);
 
@@ -57,6 +56,7 @@ public class PerStateData extends AppCompatActivity {
         perStateNewRecovered = findViewById(R.id.perstate_recovered_new_textView);
         perStateNewDeceased = findViewById(R.id.perstate_death_new_textView);
         perstateName = findViewById(R.id.district_data_title);
+        mPieChart = findViewById(R.id.piechart_perstate);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -76,6 +76,11 @@ public class PerStateData extends AppCompatActivity {
         stateRecovery = NumberFormat.getInstance().format(stateRecoveredInt);
 
         //assert stateActive != null;
+        mPieChart.addPieSlice(new PieModel("Active", Integer.parseInt(activeCopy), Color.parseColor("#007afe")));
+        mPieChart.addPieSlice(new PieModel("Recovered", Integer.parseInt(recoveredCopy), Color.parseColor("#08a045")));
+        mPieChart.addPieSlice(new PieModel("Deceased", Integer.parseInt(deceasedCopy), Color.parseColor("#F6404F")));
+
+        mPieChart.startAnimation();
 
         MainActivity object = new MainActivity();
         String formatDate = object.formatDate(stateLastUpdate, 0);
@@ -83,9 +88,6 @@ public class PerStateData extends AppCompatActivity {
         perStateActive.setText(stateActive);
         perStateDeceased.setText(stateDeceased);
         perStateUpdate.setText(formatDate);
-        perStateNewConfirmed.setText("+" + stateNewConfirmed);
-        perStateNewRecovered.setText("+" + stateNewRecovered);
-        perStateNewDeceased.setText("+" + stateNewDeceased);
         perStateRecovered.setText(stateRecovery);
         perstateName.setText("District data of "+stateName);
     }
