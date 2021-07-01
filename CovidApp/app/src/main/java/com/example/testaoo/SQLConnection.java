@@ -385,16 +385,21 @@ public class SQLConnection{
 
 //	public BigDecimal[] sumPopulation() {
 //		try {
-//			query = "SELECT SUM(c1.population) as populations, COUNT(c1.country) as numCountries FROM countryPopulation c1, countryData c2 WHERE c1.country = c2.country;";
+//			query = "SELECT SUM(c1.population) as populations FROM countryPopulation c1, countryData c2 WHERE c1.country = c2.country;";
+//			System.out.println(query);
 //			rs = stmt.executeQuery(query);
+//			System.out.println("Testing1");
 //			BigDecimal[] result = new BigDecimal[2];
+//
 //			if (rs.next()) {
+//				System.out.println("Testing2");
 //				result[0] = rs.getBigDecimal(1); // Total populations
 //				result[1] = rs.getBigDecimal(2); // Total num. countries
 //			}
 //			return result;
 //		} catch (SQLException e) {
 //			// TODO Auto-generated catch block
+//			System.out.println("Testing3");
 //			e.printStackTrace();
 //			return null;
 //		}

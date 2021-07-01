@@ -38,7 +38,7 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 
 	BigDecimal totalInfected;
 	BigDecimal totalInfectedCountry;
-	//	BigDecimal totalPopulation;
+	BigDecimal totalPopulation;
 	BigDecimal totalDeceased;
 	BigDecimal totalDeceasedCountry;
 
@@ -144,7 +144,7 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 				if (line.charAt(0) == '}') {
 					start = false;
 					// Insert the data into the database
-					if (infected != -1) {
+					if (infected != -1 && deceased != -1) {
 						connection.loadData(country, infected, recovered, deceased, tested, updateTime, moreData,
 								historyData, sourceURL);
 					}
@@ -402,6 +402,10 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 //		}
 	}
 
+//	public void getTotalPopul() {
+//		System.out.println("Testing: " + connection.sumPopulation()[0]);
+//		totalPopulation = connection.sumPopulation()[0];
+//	}
 	/**
 	 * This method is called at the end of the app program to terminate all
 	 * connections

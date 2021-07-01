@@ -81,21 +81,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_marginTop="5dp"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/green_pie" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="10dp"
-                                android:text="Recovered"
-                                android:textColor="#fff" />
-
-                        </LinearLayout>
+                            android:gravity="center_vertical"/>
 
                         <!-- Deceased part color -->
                         <LinearLayout
@@ -196,17 +182,17 @@
 
                         <!-- Text for title -->
                         <TextView
-                            android:id="@+id/recovered_title_textView"
+                            android:id="@+id/infectCountry_title_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Recovered"
-                            android:textColor="@color/green"
+                            android:text="Countries"
+                            android:textColor="@color/orange"
                             android:textSize="20sp" />
 
                         <!-- Text for number -->
                         <TextView
-                            android:id="@+id/recovered_textView"
+                            android:id="@+id/infectCountry_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -279,13 +265,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Samples tested"
-                            android:textColor="@color/pink"
+                            android:text="Fatality"
+                            android:textColor="@android:color/holo_blue_bright"
                             android:textSize="20sp" />
 
                         <!-- Text for number -->
                         <TextView
-                            android:id="@+id/tests_textView"
+                            android:id="@+id/statistics_textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -399,8 +385,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Country Data"
-                                android:textColor="#ff1744"
+                                android:text="Country List"
+                                android:textColor="@color/white"
                                 android:textSize="17sp" />
 
                         </LinearLayout>

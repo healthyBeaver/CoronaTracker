@@ -55,7 +55,7 @@
                     android:layout_weight="2"
                     android:gravity="start"
                     android:lines="1"
-                    android:text="State"
+                    android:text="Countries"
                     android:textColor="@color/orange"
                     android:textSize="18sp" />
 
