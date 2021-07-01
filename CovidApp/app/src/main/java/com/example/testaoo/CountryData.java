@@ -51,23 +51,6 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 	public CountryData() {
 		loaded = false;
 		connectError = false;
-//		System.out.println("Connecting to Online Data");
-//		try {
-//			dataURL = new URL(
-//					"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
-//			connectURL = dataURL.openConnection();
-//			br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
-//			System.out.println("Online Data Connected");
-//			this.connection = new SQLConnection();
-//			this.loadFile();
-//		} catch (MalformedURLException e) {
-//			System.out.println("Online Data Not Connected");
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			System.out.println("Online Data Not Connected");
-//			e.printStackTrace();
-//		}
 	}
 
 
@@ -93,13 +76,15 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 	protected Void doInBackground(String... strings) {
 		System.out.println("Connecting to Online Data");
 		try {
-			System.out.println("Test");
-			dataURL = new URL(
-					"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
-			connectURL = dataURL.openConnection();
-			br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
-			System.out.println("Online Data Connected");
-			this.connection = new SQLConnection();
+			if (!loaded){
+				dataURL = new URL(
+						"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
+				connectURL = dataURL.openConnection();
+				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
+				System.out.println("Online Data Connected");
+				this.connection = new SQLConnection();
+			}
+			loaded = false;
 			this.loadFile();
 		} catch (MalformedURLException e) {
 			System.out.println("Online Data Not Connected");
@@ -128,6 +113,16 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 		boolean start = false;
 		String[] splitLine = null;
 		System.out.println("Updating Database");
+		if (loaded){
+			try{
+				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
+				loaded = false;
+			} catch (IOException e){
+				e.printStackTrace();
+				return;
+			}
+
+		}
 		try {
 
 			// Read each line in the data from the online source
@@ -218,7 +213,10 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 			BigDecimal[] resultInfected = connection.sumInfected();
 			BigDecimal[] resultDeceased = connection.sumDeceased();
 			if (resultInfected == null | resultDeceased == null) {
-				System.out.println("Database Not Updated");
+				System.out.println("Database Not Updated due to the sum Infected and Deceased");
+				System.out.println(resultInfected);
+				System.out.println(resultDeceased);
+
 				return;
 			}
 			totalInfected = resultInfected[0];
@@ -226,23 +224,11 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 			totalDeceased = resultDeceased[0];
 			totalDeceasedCountry = resultDeceased[1];
 			System.out.println("Database Updated");
+			loaded = true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Database Not Updated");
+			System.out.println("Database Not Updated for IOException");
 		}
-	}
-
-	/**
-	 * Is called on the main page of the app program to display the statistic of the
-	 * infected and the deceased
-	 */
-	public String[] worldData() {
-		String[] result = new String[4];
-		result[0] = totalInfected + "";
-		result[1] = totalInfectedCountry + "";
-		result[2] = totalDeceased + "";
-		result[3] = totalDeceasedCountry + "";
-		return result;
 	}
 
 	/**
@@ -251,12 +237,6 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 	 */
 	public ArrayList<String[]> briefInfoCountries() {
 		return connection.retrieveBriefData();
-//		ArrayList<String[]> result = connection.retrieveBriefData();
-//		for (int i = 0; i < result.size(); i++) {
-//			System.out.println(result.get(i)[0]);
-//			System.out.println("\tInfected: \t" + result.get(i)[1]);
-//			System.out.println("\tDeceased: \t" + result.get(i)[2]);
-//		}
 	}
 
 	/**
@@ -392,20 +372,8 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 			return null;
 		}
 		return result;
-//		System.out.println(result.get(0)[0] + " Update History");
-//		for (int i = 0; i < result.size(); i++) {
-//			System.out.println("\"Update \t" + result.get(i)[1]);
-//			System.out.println("\tInifected: \t" + result.get(i)[2]);
-//			System.out.println("\tRecovered: \t" + result.get(i)[3]);
-//			System.out.println("\tDeceased: \t" + result.get(i)[4]);
-//			System.out.println("\tTested: \t" + result.get(i)[5]);
-//		}
 	}
 
-//	public void getTotalPopul() {
-//		System.out.println("Testing: " + connection.sumPopulation()[0]);
-//		totalPopulation = connection.sumPopulation()[0];
-//	}
 	/**
 	 * This method is called at the end of the app program to terminate all
 	 * connections

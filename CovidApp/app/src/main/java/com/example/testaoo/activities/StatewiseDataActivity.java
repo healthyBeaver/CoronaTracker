@@ -21,9 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-//import com.example.testaoo.CountryData;
-import com.example.testaoo.CountryData;
-import com.example.testaoo.MainActivity;
 import com.example.testaoo.R;
 import com.example.testaoo.adapters.StatewiseAdapter;
 import com.example.testaoo.data.PerStateData;
@@ -55,14 +52,10 @@ public class StatewiseDataActivity extends AppCompatActivity implements Statewis
     SwipeRefreshLayout swipeRefreshLayout;
     EditText search;
     String stateLastUpdate;
-    private CountryData cd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        this.cd = MainActivity.cd;
-        cd = com.example.testaoo.MainActivity.cd;
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("State Data");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -128,20 +121,13 @@ public class StatewiseDataActivity extends AppCompatActivity implements Statewis
     }
 
     private void extractData() {
-//        String dataURL = "https://api.covid19india.org/data.json";
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, dataURL, null, new Response.Listener<JSONObject>() {
+        String dataURL = "https://api.covid19india.org/data.json";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, dataURL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    ArrayList<String[]> countries = cd.briefInfoCountries();
-
-                    for(int i = 0; i < countries.size(); i++){
-                        String country = countries.get(i)[0];
-                        String infect = countries.get(i)[1];
-                        String decease = countries.get(i)[2];
-
-//                    JSONArray jsonArray = response.getJSONArray("statewise");
-//                    statewiseModelArrayList.clear();
+                    JSONArray jsonArray = response.getJSONArray("statewise");
+                    statewiseModelArrayList.clear();
                     for (int i = 1; i < jsonArray.length(); i++) {
                         JSONObject statewise = jsonArray.getJSONObject(i);
 
