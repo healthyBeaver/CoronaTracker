@@ -21,9 +21,9 @@ import java.util.ArrayList;
  */
 public class CountryData extends AsyncTask<String,Void,Void> {
 
-	URL dataURL;
-	URLConnection connectURL;
-	BufferedReader br;
+//	URL dataURL;
+//	URLConnection connectURL;
+//	BufferedReader br;
 	SQLConnection connection;
 
 	int infected;
@@ -77,24 +77,24 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 		System.out.println("Connecting to Online Data");
 		try {
 			if (!loaded){
-				dataURL = new URL(
-						"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
-				connectURL = dataURL.openConnection();
-				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
-				System.out.println("Online Data Connected");
+//				dataURL = new URL(
+//						"https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
+//				connectURL = dataURL.openConnection();
+//				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
+//				System.out.println("Online Data Connected");
 				this.connection = new SQLConnection();
 			}
 			loaded = false;
 			this.loadFile();
-		} catch (MalformedURLException e) {
-			System.out.println("Online Data Not Connected");
-			connectError = true;
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Online Data Not Connected");
-			connectError = true;
-			e.printStackTrace();
+//		} catch (MalformedURLException e) {
+//			System.out.println("Online Data Not Connected");
+//			connectError = true;
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println("Online Data Not Connected");
+//			connectError = true;
+//			e.printStackTrace();
 		} catch (Exception e){
 			System.out.println("Online Data Not Connected");
 			connectError = true;
@@ -114,100 +114,100 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 		String[] splitLine = null;
 		System.out.println("Updating Database");
 		if (loaded){
-			try{
-				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
-				loaded = false;
-			} catch (IOException e){
-				e.printStackTrace();
-				return;
-			}
+//			try{
+//				br = new BufferedReader(new InputStreamReader(connectURL.getInputStream()));
+//				loaded = false;
+//			} catch (IOException e){
+//				e.printStackTrace();
+//				return;
+//			}
 
 		}
-		try {
+//		try {
 
 			// Read each line in the data from the online source
-			while ((line = br.readLine()) != null) {
-				line = line.trim();
-
-				// Start getting info about a country from the online source
-				if (line.charAt(0) == '{') {
-					start = true;
-					continue;
-				}
-
-				// Insert/Update new info about a country
-				if (line.charAt(0) == '}') {
-					start = false;
-					// Insert the data into the database
-					if (infected != -1 && deceased != -1) {
-						connection.loadData(country, infected, recovered, deceased, tested, updateTime, moreData,
-								historyData, sourceURL);
-					}
-					country = updateTime = moreData = historyData = sourceURL = null;
-					infected = recovered = deceased = tested = -1;
-					continue;
-				}
-
-				// Disregard unimportant lines from the online source
-				if (start == false) {
-					continue;
-				}
-
-				// Retrieve info about a country from the online source
-				if (start) {
-					splitLine = line.split("\":");
-
-					// Remove comma at the end of the line if exists
-					if (splitLine[1].charAt(splitLine[1].length() - 1) == ',') {
-						splitLine[1] = splitLine[1].substring(0, splitLine[1].length() - 1);
-					}
-
-					// Remove double quotes
-					splitLine[0] = splitLine[0].replaceAll("\"", "");
-					splitLine[1] = splitLine[1].replaceAll("\"", "");
-
-					splitLine[0] = splitLine[0].toLowerCase();
-
-					// Remove white spaces at the beginning and at the end
-					splitLine[0] = splitLine[0].trim();
-					splitLine[1] = splitLine[1].trim();
-					if (splitLine[0].compareTo("infected") == 0) {
-						try {
-							infected = Integer.parseInt(splitLine[1]);
-						} catch (NumberFormatException e) {
-							infected = -1;
-						}
-					} else if (splitLine[0].compareTo("tested") == 0) {
-						try {
-							tested = Integer.parseInt(splitLine[1]);
-						} catch (NumberFormatException e) {
-							tested = -1;
-						}
-					} else if (splitLine[0].compareTo("recovered") == 0) {
-						try {
-							recovered = Integer.parseInt(splitLine[1]);
-						} catch (NumberFormatException e) {
-							recovered = -1;
-						}
-					} else if (splitLine[0].compareTo("deceased") == 0) {
-						try {
-							deceased = Integer.parseInt(splitLine[1]);
-						} catch (NumberFormatException e) {
-							deceased = -1;
-						}
-					} else if (splitLine[0].compareTo("country") == 0) {
-						country = splitLine[1].toUpperCase();
-					} else if (splitLine[0].compareTo("moredata") == 0) {
-						moreData = splitLine[1];
-					} else if (splitLine[0].compareTo("historydata") == 0) {
-						historyData = splitLine[1];
-					} else if (splitLine[0].compareTo("sourceurl") == 0) {
-						sourceURL = splitLine[1];
-					} else if (splitLine[0].compareTo("lastupdatedapify") == 0) {
-						updateTime = splitLine[1];
-					}
-				}
-			}
+//			while ((line = br.readLine()) != null) {
+//				line = line.trim();
+//
+//				// Start getting info about a country from the online source
+//				if (line.charAt(0) == '{') {
+//					start = true;
+//					continue;
+//				}
+//
+//				// Insert/Update new info about a country
+//				if (line.charAt(0) == '}') {
+//					start = false;
+//					// Insert the data into the database
+//					if (infected != -1 && deceased != -1) {
+//						connection.loadData(country, infected, recovered, deceased, tested, updateTime, moreData,
+//								historyData, sourceURL);
+//					}
+//					country = updateTime = moreData = historyData = sourceURL = null;
+//					infected = recovered = deceased = tested = -1;
+//					continue;
+//				}
+//
+//				// Disregard unimportant lines from the online source
+//				if (start == false) {
+//					continue;
+//				}
+//
+//				// Retrieve info about a country from the online source
+//				if (start) {
+//					splitLine = line.split("\":");
+//
+//					// Remove comma at the end of the line if exists
+//					if (splitLine[1].charAt(splitLine[1].length() - 1) == ',') {
+//						splitLine[1] = splitLine[1].substring(0, splitLine[1].length() - 1);
+//					}
+//
+//					// Remove double quotes
+//					splitLine[0] = splitLine[0].replaceAll("\"", "");
+//					splitLine[1] = splitLine[1].replaceAll("\"", "");
+//
+//					splitLine[0] = splitLine[0].toLowerCase();
+//
+//					// Remove white spaces at the beginning and at the end
+//					splitLine[0] = splitLine[0].trim();
+//					splitLine[1] = splitLine[1].trim();
+//					if (splitLine[0].compareTo("infected") == 0) {
+//						try {
+//							infected = Integer.parseInt(splitLine[1]);
+//						} catch (NumberFormatException e) {
+//							infected = -1;
+//						}
+//					} else if (splitLine[0].compareTo("tested") == 0) {
+//						try {
+//							tested = Integer.parseInt(splitLine[1]);
+//						} catch (NumberFormatException e) {
+//							tested = -1;
+//						}
+//					} else if (splitLine[0].compareTo("recovered") == 0) {
+//						try {
+//							recovered = Integer.parseInt(splitLine[1]);
+//						} catch (NumberFormatException e) {
+//							recovered = -1;
+//						}
+//					} else if (splitLine[0].compareTo("deceased") == 0) {
+//						try {
+//							deceased = Integer.parseInt(splitLine[1]);
+//						} catch (NumberFormatException e) {
+//							deceased = -1;
+//						}
+//					} else if (splitLine[0].compareTo("country") == 0) {
+//						country = splitLine[1].toUpperCase();
+//					} else if (splitLine[0].compareTo("moredata") == 0) {
+//						moreData = splitLine[1];
+//					} else if (splitLine[0].compareTo("historydata") == 0) {
+//						historyData = splitLine[1];
+//					} else if (splitLine[0].compareTo("sourceurl") == 0) {
+//						sourceURL = splitLine[1];
+//					} else if (splitLine[0].compareTo("lastupdatedapify") == 0) {
+//						updateTime = splitLine[1];
+//					}
+//				}
+//			}
 
 			// Calculates the sum of the infected and the deceased
 			BigDecimal[] resultInfected = connection.sumInfected();
@@ -225,10 +225,10 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 			totalDeceasedCountry = resultDeceased[1];
 			System.out.println("Database Updated");
 			loaded = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Database Not Updated for IOException");
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			System.out.println("Database Not Updated for IOException");
+//		}
 	}
 
 	/**
@@ -379,11 +379,11 @@ public class CountryData extends AsyncTask<String,Void,Void> {
 	 * connections
 	 */
 	public void endConnection() {
-		try {
-			br.close();
+//		try {
+//			br.close();
 			connection.endConnection();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

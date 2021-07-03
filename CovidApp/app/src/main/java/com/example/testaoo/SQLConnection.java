@@ -22,6 +22,7 @@ import java.util.Date;
 public class SQLConnection{
 	static final String ID = "administrator";
 	static final String password = "Home0501!";
+	static final String endpoint = "jdbc:mysql://project1-instance-1.cmpkjdwxqnze.us-east-2.rds.amazonaws.com";
 
 	private Connection connection;
 	private Statement stmt;
@@ -32,15 +33,15 @@ public class SQLConnection{
 	 * The constructor method that initializes the connection to the database
 	 */
 	public SQLConnection() {
-		System.out.println("Testing SQLCOnnection");
+		System.out.println("Testing SQL Connection");
 		try {
 			System.out.println("Connecting to Database");
 			Class.forName("com.mysql.jdbc.Driver");
-			String endpoint = "jdbc:mysql://project1-instance-1.cmpkjdwxqnze.us-east-2.rds.amazonaws.com";
 			connection = DriverManager.getConnection(endpoint, ID, password);
 			stmt = connection.createStatement();
 			rs = null;
 			query = "use covidProject;";
+//			query = "use covidtracker;";
 			stmt.execute(query);
 			System.out.println("Database Connected");
 		} catch (SQLException e1) {
@@ -80,9 +81,15 @@ public class SQLConnection{
 				updateData(country, infected, recovered, deceased, tested, updateTime, moreData, historyData,
 						sourceURL);
 			}
+			return;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Country is :" + country);
 		}
+
+
 	}
 
 	/**
