@@ -56,7 +56,7 @@ public class StatewiseDataActivity extends AppCompatActivity implements Statewis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("State Data");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Country Data");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.activity_statewise_data);
