@@ -46,42 +46,28 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:padding="6dp"
-                android:weightSum="4.25">
+                android:weightSum="3">
 
-                <!-- Text layout for country tab -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_weight="1.25"
+                    android:layout_weight="2"
                     android:gravity="start"
                     android:lines="1"
                     android:text="Countries"
                     android:textColor="@color/orange"
                     android:textSize="18sp" />
 
-                <!-- Text layout for Total case tab -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:lines="1"
                     android:text="Total Cases"
                     android:textColor="@color/yellow"
-                    android:textSize="18sp" />
-
-                <!-- Text layout for total deceased tab -->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:lines="1"
-                    android:text="Total Deceased"
-                    android:textColor="@color/blue"
                     android:textSize="18sp" />
 
             </LinearLayout>

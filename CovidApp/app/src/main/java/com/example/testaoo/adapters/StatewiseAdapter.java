@@ -72,10 +72,8 @@ public class StatewiseAdapter extends RecyclerView.Adapter<StatewiseAdapter.View
         StatewiseModel currentItem = arrayList.get(position);
         String stateName = currentItem.getState();
         String stateTotal = currentItem.getConfirmed();
-        String stateDeceased = currentItem.getDeceased();
-        holder.countryTotalCases.setText(stateTotal);
-        holder.countryName.setText(stateName);
-        holder.countryTotalDeceased.setText(stateDeceased);
+        holder.stateTotalCases.setText(stateTotal);
+        holder.stateName.setText(stateName);
     }
 
     @Override
@@ -90,14 +88,13 @@ public class StatewiseAdapter extends RecyclerView.Adapter<StatewiseAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView countryName, countryTotalCases, countryTotalDeceased;
+        TextView stateName, stateTotalCases;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            countryName = itemView.findViewById(R.id.country_name_textview);
-            countryTotalCases = itemView.findViewById(R.id.country_confirmed_textview);
-            countryTotalDeceased = itemView.findViewById(R.id.country_deceased_textview);
+            stateName = itemView.findViewById(R.id.state_name_textview);
+            stateTotalCases = itemView.findViewById(R.id.state_confirmed_textview);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
