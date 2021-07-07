@@ -67,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
         textView_infectCountry = findViewById(R.id.infectCountry_textView);
         textView_deceased = findViewById(R.id.deceased_textView);
         textView_statistics = findViewById(R.id.statistics_textView);
-        textView_date = findViewById(R.id.date_textView);
         swipeRefreshLayout = findViewById(R.id.main_refreshLayout);
-        textview_time = findViewById(R.id.time_textView);
 
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         Objects.requireNonNull(getSupportActionBar()).setTitle("Global Covid-19 Status");
@@ -166,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 while(!cd.loaded && !cd.connectError){
+                    break;
                 }
                 if (cd.loaded && !cd.connectError){
                     progressDialog.cancel();
