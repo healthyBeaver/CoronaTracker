@@ -34,12 +34,12 @@ import java.util.Objects;
 
 public class StatewiseDataActivity extends AppCompatActivity implements StatewiseAdapter.OnItemClickListner {
 
-    public static final String STATE_NAME = "stateName";
-    public static final String STATE_INFECTED = "stateInfected";
-    public static final String STATE_ACTIVE = "stateActive";
-    public static final String STATE_DECEASED = "stateDeceased";
-    public static final String STATE_LAST_UPDATE = "stateLastUpdate";
-    public static final String STATE_RECOVERED = "stateRecovered";
+    public static final String COUNTRY_NAME = "CountryName";
+    public static final String COUNTRY_INFECTED = "CountryInfected";
+    public static final String COUNTRY_ACTIVE = "CountryActive";
+    public static final String COUNTRY_DECEASED = "CountryDeceased";
+    public static final String COUNTRY_LAST_UPDATE = "CountryLastUpdate";
+    public static final String COUNTRY_RECOVERED = "CountryRecovered";
 
     private RecyclerView recyclerView;
     private StatewiseAdapter statewiseAdapter;
@@ -191,15 +191,12 @@ public class StatewiseDataActivity extends AppCompatActivity implements Statewis
     public void onItemClick(int position) {
         Intent perStateIntent = new Intent(this, PerStateData.class);
         StatewiseModel clickedItem = statewiseModelArrayList.get(position);
-
-        perStateIntent.putExtra(STATE_NAME, clickedItem.getState());
-        perStateIntent.putExtra(STATE_INFECTED, clickedItem.getConfirmed());
-        perStateIntent.putExtra(STATE_ACTIVE, clickedItem.getActive());
-        perStateIntent.putExtra(STATE_DECEASED, clickedItem.getDeceased());
-        perStateIntent.putExtra(STATE_LAST_UPDATE, clickedItem.getLastupdate());
-        perStateIntent.putExtra(STATE_RECOVERED, clickedItem.getRecovered());
-
-
+        perStateIntent.putExtra(COUNTRY_NAME, clickedItem.getState());
+        perStateIntent.putExtra(COUNTRY_INFECTED, clickedItem.getConfirmed());
+        perStateIntent.putExtra(COUNTRY_ACTIVE, clickedItem.getActive());
+        perStateIntent.putExtra(COUNTRY_DECEASED, clickedItem.getDeceased());
+        perStateIntent.putExtra(COUNTRY_LAST_UPDATE, clickedItem.getLastupdate());
+        perStateIntent.putExtra(COUNTRY_RECOVERED, clickedItem.getRecovered());
         startActivity(perStateIntent);
     }
 
